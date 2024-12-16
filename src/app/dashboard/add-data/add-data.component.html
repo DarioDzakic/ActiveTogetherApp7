@@ -1,11 +1,44 @@
 <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
     <h2>Zum Kurs anmelden!</h2>
-    <input placeholder="Name" type="input" formControlName="name"><br />
-    <input placeholder="Geburtsdatum" type="date" formControlName="birthdate"><br />
-    <select formControlName="courseId">
-        <option value="" disabled>Bitte auswählen</option>
-        <option *ngFor="let course of storeService.courses" [ngValue]="course.id">{{course.name}}, {{course.instructor}}</option>
-    </select>
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" type="input" formControlName="name"><br />
+      @if (this.registrationForm.controls["name"].errors) {
+        <mat-error>{{"Bitte geben sie einen korrekten Namen an"}}</mat-error>
+      }
+    </mat-form-field>
 
-    <button type="submit">Erfassen</button>
+    <mat-form-field>
+        <mat-label>Wähle dein Geburtstag</mat-label>
+        <input placeholder="Geburtsdatum" matInput [matDatepicker]="picker" formControlName="birthdate">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>  
+        @if (this.registrationForm.controls["birthdate"].errors) {
+          <mat-error>{{"Bitte geben sie ein korrektes Datum an"}}</mat-error>
+        }
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Bitte auswählen</mat-label>
+        <mat-select formControlName="courseId">
+          @for (course of storeService.courses; track course) {
+            <mat-option [value]="course.id">{{course.name}}, {{course.instructor}}</mat-option>
+          }
+        </mat-select>
+        @if (this.registrationForm.controls["courseId"].errors) {
+          <mat-error>{{"Bitte wählen sie ein Item aus"}}</mat-error>
+        }
+      </mat-form-field>
+      <button mat-raised-button type="submit">Erfassen</button>
+      <div class="toast" id="successToast" data-autohide="false"  role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <strong class="mr-auto">Erfolg!</strong>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="toast-body">
+          Sie haben sich erfolgreich zu dem Kurs angemeldet.
+        </div>
+      </div>
 </form>
