@@ -1,6 +1,8 @@
-<h1>{{ title }}</h1>
-<img [src]="imagePath" alt="Logo" class="logo">
-<mat-toolbar class="pr-3">
+<div class="d-flex align-items-center">
+  <img [src]="imagePath" alt="Logo" class="logo">
+  <h1>{{ title }}</h1>
+</div>
+<mat-toolbar>
   <button mat-raised-button routerLink="/dashboard">Dashboard</button>
   <button mat-raised-button routerLink="/about">About</button>
 </mat-toolbar>
